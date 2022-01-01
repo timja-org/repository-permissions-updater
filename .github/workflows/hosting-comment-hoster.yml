@@ -1,4 +1,4 @@
-name: Hosting re-checker
+name: Hosting hoster
 
 on:
   issue_comment:
@@ -7,9 +7,11 @@ on:
       - edited
 
 jobs:
-  hosting:
+  validate:
     runs-on: ubuntu-latest
-    if: ${{ github.event.comment.body == '/hosting re-check'}}
+    if: ${{ github.event.comment.body == '/hosting re-check' }}
+    outputs:
+      actor_in_hosting_team: ${{ steps.checkUserMember.outputs.isTeamMember }}
     steps:
       - name: Ack
         uses: actions/github-script@v4
@@ -22,6 +24,17 @@ jobs:
               comment_id: context.payload.comment.id,
               content: "+1",
             });
+      - uses: tspascoal/get-user-teams-membership@v1
+        id: checkUserMember
+        with:
+          username: ${{ github.actor }}
+          team: 'hosting'
+          GITHUB_TOKEN: ${{ secrets.HOSTING_PAT }}
+  hosting:
+    runs-on: ubuntu-latest
+    needs: [validate]
+    if: needs.validate.outputs.actor_in_hosting_team == 'true'
+    steps:
       - uses: actions/checkout@v2
         with:
           ref: 'master'
@@ -34,7 +47,9 @@ jobs:
         run: mvn -B package -Dspotbugs.skip
       - name: Run hosting checker
         run: |
-          java -cp target/repository-permissions-updater-1.0-SNAPSHOT-bin/repository-permissions-updater-1.0-SNAPSHOT.jar io.jenkins.infra.repository_permissions_updater.hosting.HostingChecker ${{ github.event.issue.number }}
+          java -cp target/repository-permissions-updater-1.0-SNAPSHOT-bin/repository-permissions-updater-1.0-SNAPSHOT.jar io.jenkins.infra.repository_permissions_updater.hosting.Hoster ${{ github.event.issue.number }}
         env:
           GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
           ORG_NAME: timja-org
+
+# https://github.com/tspascoal/get-user-teams-membership

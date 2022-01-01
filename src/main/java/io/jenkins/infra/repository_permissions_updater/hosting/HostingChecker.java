@@ -87,12 +87,13 @@ public class HostingChecker {
                     + "or Info are just recommendations and will not stall the hosting process.\n");
             LOGGER.info("Appending issues to msg");
             appendIssues(msg, hostingIssues, 1);
-            msg.append("\nYou can re-trigger a check by editing your hosting request or by commenting '/hosting re-check'");
+            msg.append("\nYou can re-trigger a check by editing your hosting request or by commenting `/hosting re-check`");
         } else {
             msg.append("It looks like you have everything in order for your hosting request. "
                     + "A human volunteer will check over things that I am not able to check for "
                     + "(code review, README content, etc) and process the request as quickly as possible. "
-                    + "Thank you for your patience.");
+                    + "Thank you for your patience.\n")
+                    .append("\nHosting team members can host this request with `/hosting host`");
         }
 
         LOGGER.info(msg.toString());
