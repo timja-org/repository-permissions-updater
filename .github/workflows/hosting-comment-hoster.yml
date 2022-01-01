@@ -9,7 +9,7 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
-    if: ${{ github.event.comment.body == '/hosting re-check' }}
+    if: ${{ github.event.comment.body == '/hosting host' }}
     outputs:
       actor_in_hosting_team: ${{ steps.checkUserMember.outputs.isTeamMember }}
     steps:
