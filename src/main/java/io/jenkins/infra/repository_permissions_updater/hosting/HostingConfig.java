@@ -1,9 +1,5 @@
 package io.jenkins.infra.repository_permissions_updater.hosting;
 
-import java.util.Objects;
-
-import static java.util.Objects.requireNonNull;
-
 public final class HostingConfig {
 
     static final String TARGET_ORG_NAME;
@@ -11,8 +7,8 @@ public final class HostingConfig {
     static final String HOSTING_REPO_SLUG;
     static final String HOSTING_REPO_NAME = "repository-permissions-updater";
     static final String JIRA_URL = "https://issues.jenkins.io";
-    static final String JIRA_USERNAME = requireNonNull(System.getenv("JIRA_USERNAME"));
-    static final String JIRA_PASSWORD = requireNonNull(System.getenv("JIRA_PASSWORD"));
+    static final String JIRA_USERNAME = System.getenv("JIRA_USERNAME");
+    static final String JIRA_PASSWORD = System.getenv("JIRA_PASSWORD");
     static final String JIRA_PROJECT;
 
     private HostingConfig() {
