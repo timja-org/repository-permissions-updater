@@ -1,0 +1,9 @@
+---
+name: "dummy"
+github: &GH "timja-org/dummy-plugin"
+paths:
+- "io/jenkins/plugins/dummy"
+developers:
+- "timja"
+issues:
+  - jira: 28830
